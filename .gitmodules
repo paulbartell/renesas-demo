@@ -1,0 +1,51 @@
+[submodule "lib/freertos/backoffAlgorithm"]
+	path = lib/freertos/backoffAlgorithm
+	url = https://github.com/FreeRTOS/backoffAlgorithm.git
+[submodule "lib/freertos/coreHTTP"]
+	path = lib/freertos/coreHTTP
+	url = https://github.com/FreeRTOS/coreHTTP.git
+[submodule "lib/freertos/coreJSON"]
+	path = lib/freertos/coreJSON
+	url = https://github.com/FreeRTOS/coreJSON.git
+[submodule "lib/freertos/coreMQTT"]
+	path = lib/freertos/coreMQTT
+	url = https://github.com/FreeRTOS/coreMQTT.git
+[submodule "lib/freertos/coreMQTT-Agent"]
+	path = lib/freertos/coreMQTT-Agent
+	url = https://github.com/FreeRTOS/coreMQTT-Agent.git
+[submodule "lib/freertos/kernel"]
+	path = lib/freertos/kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+[submodule "lib/aws/IoTDeviceDefender"]
+	path = lib/aws/IoTDeviceDefender
+	url = https://github.com/aws/Device-Defender-for-AWS-IoT-embedded-sdk.git
+[submodule "lib/aws/IoTDeviceShadow"]
+	path = lib/aws/IoTDeviceShadow
+	url = https://github.com/aws/Device-Shadow-for-AWS-IoT-embedded-sdk.git
+[submodule "lib/aws/IoTJobs"]
+	path = lib/aws/IoTJobs
+	url = https://github.com/aws/Jobs-for-AWS-IoT-embedded-sdk.git
+[submodule "lib/aws/IotOta"]
+	path = lib/aws/IotOta
+	url = https://github.com/aws/ota-for-aws-iot-embedded-sdk.git
+[submodule "lib/littlefs"]
+	path = lib/littlefs
+	url = https://github.com/littlefs-project/littlefs.git
+[submodule "lib/mbedtls"]
+	path = lib/mbedtls
+	url = https://github.com/Mbed-TLS/mbedtls.git
+[submodule "lib/tinycbor"]
+	path = lib/tinycbor
+	url = https://github.com/intel/tinycbor.git
+[submodule "lib/mcuboot"]
+	path = lib/mcuboot
+	url = https://github.com/mcu-tools/mcuboot.git
+[submodule "lib/llhttp"]
+	path = lib/llhttp
+	url = https://github.com/nodejs/llhttp.git
+[submodule "lib/FreeRTOS/plus-tcp"]
+	path = lib/freertos/plus-tcp
+	url = https://github.com/FreeRTOS/FreeRTOS-Plus-TCP.git
+[submodule "test/freertos_lib_integration"]
+	path = test/freertos_lib_integration
+	url = https://github.com/FreeRTOS/FreeRTOS-Libraries-Integration-Tests.git
