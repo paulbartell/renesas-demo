@@ -34,15 +34,11 @@
 #include "sys_evt.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stm32u5xx.h"
 #include "kvstore.h"
-#include "hw_defs.h"
 #include <string.h>
 
 #include "lfs.h"
 #include "fs/lfs_port.h"
-#include "stm32u5xx_ll_rng.h"
-
 
 #include "cli/cli.h"
 
@@ -332,9 +328,12 @@ int main( void )
     }
 }
 
+/*-----------------------------------------------------------*/
+
 UBaseType_t uxRand( void )
 {
-    return LL_RNG_ReadRandData32( RNG_NS );
+    // return LL_RNG_ReadRandData32( RNG_NS );
+    return 0;
 }
 
 /*-----------------------------------------------------------*/

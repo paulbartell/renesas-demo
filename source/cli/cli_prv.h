@@ -23,6 +23,7 @@
 #ifndef _CLI_PRIV
 #define _CLI_PRIV
 
+#include "FreeRTOS.h"
 #include "semphr.h"
 #include "cli.h"
 
@@ -120,8 +121,6 @@ void FreeRTOS_CLIProcessCommand( ConsoleIO_t * const pxConsoleIO,
  * FreeRTOS_CLIGetOutputBuffer() returns the address of the output buffer.
  */
 char * FreeRTOS_CLIGetOutputBuffer( void );
-
-UART_HandleTypeDef * vInitUartEarly( void );
 
 extern const CLI_Command_Definition_t xCommandDef_conf;
 extern const CLI_Command_Definition_t xCommandDef_pki;

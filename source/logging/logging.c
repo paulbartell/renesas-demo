@@ -35,134 +35,28 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "message_buffer.h"
-#include "cli_prv.h"
+
+#include "platform_api.h"
 
 /* Project Includes */
 #include "logging.h"
-#include "hw_defs.h"
 
 /*-----------------------------------------------------------*/
-/* todo take into account maximum cli line length */
-#if ( CLI_UART_TX_STREAM_LEN < dlMAX_LOG_LINE_LENGTH )
-#error "CLI_UART_TX_STREAM_LEN must be >= dlMAX_LOG_LINE_LENGTH"
-#endif
 
 volatile StreamBufferHandle_t xLogMBuf = NULL;
-
-UART_HandleTypeDef * pxEarlyUart = NULL;
-
 static char pcPrintBuff[ dlMAX_LOG_LINE_LENGTH ];
 
-/* Should only be called during an assert with the scheduler suspended. */
-void vDyingGasp( void )
-{
-    BaseType_t xNumBytes = 0;
-
-    /* Pet the watchdog so that the message is not lost */
-    vPetWatchdog();
-
-    pxEarlyUart = vInitUartEarly();
-
-    do
-    {
-        xNumBytes = xMessageBufferReceiveFromISR( xLogMBuf, pcPrintBuff, dlMAX_PRINT_STRING_LENGTH, 0 );
-        ( void ) HAL_UART_Transmit( pxEarlyUart, ( uint8_t * ) pcPrintBuff, xNumBytes, 10 * 1000 );
-        ( void ) HAL_UART_Transmit( pxEarlyUart, ( uint8_t * ) "\r\n", 2, 10 * 1000 );
-
-        /* Pet the watchdog */
-        vPetWatchdog();
-    }
-    while( xNumBytes != 0 );
-
-    HAL_GPIO_WritePin( LED_RED_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET );
-    HAL_GPIO_WritePin( LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET );
-}
-
-/*
- * Blocking write function for early printing
- * PRE: must be called when scheduler is not running.
- */
-static void vSendLogMessageEarly( const char * buffer,
-                                  unsigned int count )
-{
-    configASSERT( xTaskGetSchedulerState() != taskSCHEDULER_RUNNING );
-
-#ifdef LOGGING_OUTPUT_ITM
-    uint32_t i = 0;
-
-    for( unsigned int i = 0; i < len; i++ )
-    {
-        ( void ) ITM_SendChar( lineOutBuf[ i ] );
-    }
-#endif
-
-
-#ifdef LOGGING_OUTPUT_UART
-    /* blocking write to UART */
-    ( void ) HAL_UART_Transmit( pxEarlyUart, ( uint8_t * ) buffer, count, 100000 );
-    ( void ) HAL_UART_Transmit( pxEarlyUart, ( uint8_t * ) "\r\n", 2, 100000 );
-#endif
-}
-
-void vInitLoggingEarly( void )
-{
-    pxEarlyUart = vInitUartEarly();
-    vSendLogMessageEarly( "\r\n", 2 );
-}
 
 static void vSendLogMessage( const char * buffer,
                              unsigned int count )
 {
     if( xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED )
     {
-        vSendLogMessageEarly( buffer, count );
-    }
-    else if( xPortIsInsideInterrupt() == pdTRUE )
-    {
-        UBaseType_t uxContext;
-        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-        configASSERT( xLogMBuf != NULL );
-
-        /* Enter critical section to preserve ordering of log messages */
-        uxContext = taskENTER_CRITICAL_FROM_ISR();
-        size_t xSpaceAvailable = xMessageBufferSpaceAvailable( xLogMBuf );
-
-        if( xSpaceAvailable > sizeof( size_t ) )
-        {
-            xSpaceAvailable -= sizeof( size_t );
-
-            if( xSpaceAvailable < ( count + sizeof( size_t ) ) )
-            {
-                ( void ) xMessageBufferSendFromISR( xLogMBuf, buffer, xSpaceAvailable - sizeof( size_t ), &xHigherPriorityTaskWoken );
-            }
-            else
-            {
-                ( void ) xMessageBufferSendFromISR( xLogMBuf, buffer, count, &xHigherPriorityTaskWoken );
-            }
-        }
-
-        taskEXIT_CRITICAL_FROM_ISR( uxContext );
-
-        portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+        vPlatformLoggingWriteEarly( buffer, count );
     }
     else
     {
-        configASSERT( xLogMBuf != NULL );
-        size_t xSpaceAvailable = xMessageBufferSpaceAvailable( xLogMBuf );
-
-        if( xSpaceAvailable > sizeof( size_t ) )
-        {
-            xSpaceAvailable -= sizeof( size_t );
-
-            if( xSpaceAvailable < count )
-            {
-                ( void ) xMessageBufferSend( xLogMBuf, buffer, xSpaceAvailable, 0 );
-            }
-            else
-            {
-                ( void ) xMessageBufferSend( xLogMBuf, buffer, count, 0 );
-            }
-        }
+        vPlatformLoggingWrite( buffer, count );
     }
 }
 

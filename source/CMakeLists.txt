@@ -1,0 +1,8 @@
+# add_subdirectory( sys )
+add_subdirectory( logging )
+# add_subdirectory( crypto )
+# add_subdirectory( kvstore )
+# add_subdirectory( cli )
+# add_subdirectory( fs )
+# add_subdirectory( mqtt_agent )
+# add_subdirectory( aws_demos )

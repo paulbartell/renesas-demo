@@ -35,12 +35,13 @@
 
 /* Dimensions the arrays into which print messages are created. */
 
+#define CLI_OUTPUT_EOL_LEN           ( 2 )
 #define dlMAX_PRINT_STRING_LENGTH    2048 - CLI_OUTPUT_EOL_LEN       /* maximum length of any single log line */
 #define dlLOGGING_STREAM_LENGTH      4096
 #define dlMAX_LOG_LINE_LENGTH        ( dlMAX_PRINT_STRING_LENGTH + CLI_OUTPUT_EOL_LEN )
 
 /* Default logging config */
-#if ( !defined( LOGGING_OUTPUT_UART ) && !defined( LOGGING_OUTPUT_ITM ) && !defined( LOGGING_OUTPUT_NONE ) )
+#if ( !defined( LOGGING_OUTPUT_UART ) && !defined( LOGGING_OUTPUT_NONE ) )
 #define LOGGING_OUTPUT_UART
 #endif
 
@@ -64,10 +65,6 @@ void vLoggingPrintf( const char * const pcLogLevel,
                      const unsigned long ulLineNumber,
                      const char * const pcFormat,
                      ... );
-void vLoggingInit( void );
-void vLoggingDeInit( void );
-void vDyingGasp( void );
-void vInitLoggingEarly( void );
 
 /* task.h cannot be included here because this file is included by FreeRTOSConfig.h */
 extern void vTaskSuspendAll( void );
@@ -121,6 +118,5 @@ extern void vTaskSuspendAll( void );
 #else
 #define LogDebug( ... )
 #endif
-#endif /* if !defined( LOG_LEVEL ) || ( ( LOG_LEVEL != LOG_NONE ) && ( LOG_LEVEL != LOG_ERROR ) && ( LOG_LEVEL != LOG_WARN ) && ( LOG_LEVEL != LOG_INFO ) && ( LOG_LEVEL != LOG_DEBUG ) ) */
-
+#endif
 #endif /* LOGGING_H */

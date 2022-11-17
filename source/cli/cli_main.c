@@ -334,6 +334,8 @@ static uint32_t prvGetNumberOfArgs( const char * pcCommandString )
     return luArgCount;
 }
 
+/*-----------------------------------------------------------*/
+
 void Task_CLI( void * pvParameters )
 {
     ( void ) pvParameters;
@@ -370,3 +372,5 @@ void Task_CLI( void * pvParameters )
         vTaskDelete( NULL );
     }
 }
+
+/*-----------------------------------------------------------*/
