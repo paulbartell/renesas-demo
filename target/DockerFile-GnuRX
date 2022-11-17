@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1
+FROM public.ecr.aws/docker/library/ubuntu:latest
+
+RUN apt-get -y update && \
+    apt-get install -y build-essential make cmake ninja-build wget tar xzip unzip vim git && \
+    apt-get clean
+
+# Install 32-bit x86 libc
+RUN dpkg --add-architecture i386 && \
+    apt-get update \
+    && apt-get install -y libc6:i386 && \
+    apt-get clean
+
+ADD gcc-8.3.0.202202-GNURX-ELF.run /tmp/
+RUN /tmp/gcc-8.3.0.202202-GNURX-ELF.run -p /opt/gcc-rx/ -y
+RUN rm /tmp/gcc-8.3.0.202202-GNURX-ELF.run && \
+    rm -r /opt/gcc-rx/share/doc /opt/gcc-rx/share/man
+
+ENV PATH /opt/gcc-rx/bin:$PATH
+RUN rx-elf-gcc --version
