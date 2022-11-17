@@ -32,7 +32,7 @@
 	path = lib/littlefs
 	url = https://github.com/littlefs-project/littlefs.git
 [submodule "lib/mbedtls"]
-	path = lib/mbedtls
+	path = lib/mbedtls/mbedtls_lib
 	url = https://github.com/Mbed-TLS/mbedtls.git
 [submodule "lib/tinycbor"]
 	path = lib/tinycbor
@@ -49,3 +49,16 @@
 [submodule "test/freertos_lib_integration"]
 	path = test/freertos_lib_integration
 	url = https://github.com/FreeRTOS/FreeRTOS-Libraries-Integration-Tests.git
+[submodule "lib/aws/IotFleetProvisioning"]
+	path = lib/aws/IotFleetProvisioning
+	url = https://github.com/aws/Fleet-Provisioning-for-AWS-IoT-embedded-sdk.git
+	branch = v1.1.0
+[submodule "lib/aws/sigv4"]
+	path = lib/aws/sigv4
+	url = https://github.com/aws/SigV4-for-AWS-IoT-embedded-sdk.git
+[submodule "test/unity_test_framework"]
+	path = test/runtime/unity
+	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "lib/freertos/coreSNTP"]
+	path = lib/freertos/coreSNTP
+	url = https://github.com/FreeRTOS/coreSNTP.git
